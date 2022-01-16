@@ -1,0 +1,12 @@
+{
+  "name": "myply-genie-adapter",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:rycont/myply-genie-adapter.git",
+  "author": "rycont <reactdev@kakao.com>",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^0.24.0",
+    "myply-common": "https://github.com/rycont/myply-common"
+  }
+}
