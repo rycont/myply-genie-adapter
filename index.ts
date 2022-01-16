@@ -3,14 +3,32 @@ import { Adaptor, Playlist, Song } from "myply-common"
 
 const endpoint = {
   search: (query: string) =>
-    `https://www.genie.co.kr/search/searchAuto?query=${encodeURIComponent(
+    `https://www.genie.co.kr/search/searchSong?query=${encodeURIComponent(
       query
     )}`,
 }
 
-export const findSongId = async (song: Song) => {
-  return (await axios(endpoint.search(song.artist + " " + song.name))).data
-    .song[0].id
+const REGEX_FIND_BRAKET = /\(.*\)/
+
+export const findSongId = async (song: Song): Promise<string | null> => {
+  try {
+    return (await axios(endpoint.search(song.artist + " " + song.name))).data
+      .split('" songid="')[1]
+      .split('"')[0]
+  } catch (e) {
+    if (song.name.match(REGEX_FIND_BRAKET)) {
+      return await findSongId({
+        ...song,
+        name: song.name.replace(REGEX_FIND_BRAKET, "").trim(),
+      })
+    }
+    console.log(
+      `Missed Match on Genie`,
+      song.artist + " " + song.name,
+      (e as Error).message
+    )
+    return null
+  }
 }
 
 export const generateURL = (playlist: Playlist) => {
