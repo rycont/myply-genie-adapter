@@ -1,4 +1,4 @@
-import { findSongId, generateURL, getPlaylistContent } from "."
+import { generateURL, getPlaylistContent } from "."
 
 getPlaylistContent("http://genie.co.kr/DCC7Z8")
   .then(generateURL)
